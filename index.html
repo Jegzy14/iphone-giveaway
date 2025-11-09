@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple & Samsung Giveaway</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .product-card h3 {
+            margin: 15px;
+            font-size: 1.2em;
+        }
+        .product-card p {
+            margin: 0 15px 15px;
+            color: #666;
+        }
+        .detail-page, .testimonials-page {
+            display: none;
+            padding: 20px;
+            background: white;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .detail-page img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        .specs {
+            list-style: none;
+            padding: 0;
+        }
+        .specs li {
+            margin-bottom: 10px;
+        }
+        .back-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .testimonial {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .testimonial img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            vertical-align: top;
+        }
+        .newsletter {
+            background: #e9ecef;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .newsletter input {
+            padding: 10px;
+            width: 250px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .newsletter button {
+            padding: 10px 20px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 10px;
+            }
+            header {
+                padding: 15px;
+            }
+            .newsletter input {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Apple & Samsung Products Giveaway!</h1>
+        <p>Click on a product to learn more and enter the giveaway.</p>
+    </header>
+    <nav>
+        <a href="#" onclick="showHome()">Home</a>
+        <a href="#" onclick="showTestimonials()">Testimonials</a>
+    </nav>
+    <div class="container">
+        <div id="home">
+            <div class="product-grid" id="product-list">
+                <!-- Products will be dynamically added here -->
+            </div>
+            <div class="newsletter">
+                <h3>Enter Email Address to claim Giveaway</h3>
+                <p>Get the latest products on our giveaways and new products!</p>
+                <form id="emailForm" onsubmit="return subscribe(event)">
+                    <input type="email" id="email" placeholder="Enter your email" required>
+                    <button type="submit">Claim</button>
+                </form>
+            </div>
+        </div>
+        <div id="detail" class="detail-page">
+            <button class="back-btn" onclick="showHome()">Back to Products</button>
+            <div id="product-detail">
+                <!-- Product details will be shown here -->
+            </div>
+        </div>
+        <div id="testimonials" class="testimonials-page">
+            <button class="back-btn" onclick="showHome()">Back to Home</button>
+            <h2>What Our Winners Say</h2>
+            <div id="testimonial-list">
+                <!-- Testimonials will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2023 Apple & Samsung Giveaway. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: "iPhone 15 Pro",
+                brand: "Apple",
+                image: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400", // Placeholder; replace with official Apple image
+                specs: [
+                    "Display: 6.1-inch Super Retina XDR OLED",
+                    "Processor: A17 Pro chip",
+                    "Camera: 48MP main, 12MP ultra-wide, 12MP telephoto",
+                    "Battery: Up to 23 hours video playback",
+                    "Storage: 128GB - 1TB options",
+                    "OS: iOS 17",
+                    "Release Date: September 2023",
+                    "Key Features: Titanium build, Action Button, USB-C port"
+                ],
+                info: "The iPhone 15 Pro offers professional-grade cameras and performance for creators and power users. It's waterproof and dust-resistant."
+            },
+            {
+                id: 2,
+                name: "MacBook Air M3",
+                brand: "Apple",
+                image: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400", // Placeholder
+                specs: [
+                    "Display: 13.6-inch Liquid Retina",
+                    "Processor: Apple M3 chip",
+                    "RAM: 8GB - 24GB unified memory",
+                    "Storage: 256GB - 2TB SSD",
+                    "Battery: Up to 18 hours",
+                    "Weight: 2.7 pounds",
+                    "Release Date: March 2024",
+                    "Key Features: MagSafe charging, 1080p FaceTime camera, four Thunderbolt 4 ports"
+                ],
+                info: "Ideal for students and professionals, the MacBook Air M3 delivers all-day battery life and seamless integration with the Apple ecosystem."
+            },
+            {
+                id: 3,
+                name: "Galaxy S24 Ultra",
+                brand: "Samsung",
+                image: "https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400", // Placeholder
+                specs: [
+                    "Display: 6.8-inch Dynamic AMOLED 2X, 120Hz",
+                    "Processor: Snapdragon 8 Gen 3 or Exynos 2400",
+                    "Camera: 200MP main, 50MP periscope telephoto, 12MP ultra-wide",
+                    "Battery: 5000mAh with 45W fast charging",
+                    "Storage: 256GB - 1TB",
+                    "OS: Android 14 with One UI 6.1",
+                    "Release Date: January 2024",
+                    "Key Features: S Pen stylus, IP68 water resistance, 100x zoom"
+                ],
+                info: "The Galaxy S24 Ultra is a powerhouse for photography and productivity, with AI-enhanced features and a built-in S Pen."
+            },
+            {
+                id: 4,
+                name: "Galaxy Tab S9 Ultra",
+                brand: "Samsung",
+                image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400", // Placeholder
+                specs: [
+                    "Display: 14.6-inch Super AMOLED, 120Hz",
+                    "Processor: Snapdragon 8 Gen 2",
+                    "RAM: 12GB - 16GB",
+                    "Storage: 256GB - 1TB",
+                    "Battery: 11,200mAh",
+                    "Weight: 1.1 pounds",
+                    "Release Date: August 2023",
+                    "Key Features: S Pen included, DeX mode, four speakers"
+                ],
+                info: "Perfect for multitasking and creativity, the Tab S9 Ultra offers laptop-like performance in a tablet form factor."
+            }
+        ];
+
+        const testimonials = [
+            {
+                name: "John Doe",
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=50", // Placeholder avatar
+                quote: "I won the iPhone 15 Pro and it's amazing! The camera quality is top-notch. Thanks to the giveaway!"
+            },
+            {
+                name: "Jane Smith",
+                image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=50", // Placeholder avatar
+                quote: "The MacBook Air M3 changed my work life. So fast and lightweight. Grateful for this opportunity!"
+            },
+            {
+                name: "Alex Johnson",
+                image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=50", // Placeholder avatar
+                quote: "Won the Galaxy S24 Ultra – the zoom feature is incredible. Highly recommend entering!"
+            },
+            {
+                name: "Emily Davis",
+                image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=50", // Placeholder avatar
+                quote: "The Galaxy Tab S9 Ultra is perfect for my art projects. Thank you for the giveaway!"
+            }
+        ];
+
+        const productList = document.getElementById('product-list');
+        const homeDiv = document.getElementById('home');
+        const detailDiv = document.getElementById('detail');
+        const testimonialsDiv = document.getElementById('testimonials');
+        const productDetail = document.getElementById('product-detail');
+        const testimonialList = document.getElementById('testimonial-list');
+
+        // Render product list
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.onclick = () => showDetail(product);
+            card.innerHTML = `
+                <img src="${product.image}" alt="${product.name}">
+                <h3>${product.name}</h3>
+                <p>${product.brand}</p>
+            `;
+            productList.appendChild(card);
+        });
+
+        // Render testimonials
+        testimonials.forEach(testimonial => {
+            const item = document.createElement('div');
+            item.className = 'testimonial';
+            item.innerHTML = `
+                <img src="${testimonial.image}" alt="${testimonial.name}">
+                <strong>${testimonial.name}</strong><br>
+                "${testimonial.quote}"
+            `;
+            testimonialList.appendChild(item);
+        });
+
+        // Show product detail
+        function showDetail(product) {
+            homeDiv.style.display = 'none';
+            detailDiv.style.display = 'block';
+            testimonialsDiv.style.display = 'none';
+            productDetail.innerHTML = `
+                <img src="${product.image}" alt="${product.name}">
+                <h2>${product.name}</h2>
+                <p><strong>Brand:</strong> ${product.brand}</p>
+                <h3>Specifications:</h3>
+                <ul class="specs">
+                    ${product.specs.map(spec => `<li>${spec}</li>`).join('')}
+                </ul>
+                <h3>Other Important Information:</h3>
+                <p>${product.info}</p>
+            `;
+        }
+
+        // Show home
+        function showHome() {
+            detailDiv.style.display = 'none';
+            testimonialsDiv.style.display = 'none';
+            homeDiv.style.display = 'block';
+        }
+
+        // Show testimonials
+        function showTestimonials() {
+            homeDiv.style.display = 'none';
+            detailDiv.style.display = 'none';
+            testimonialsDiv.style.display = 'block';
+        }
+
+        // Newsletter subscribe
+        function subscribe(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            if (email) {
+                const subject = encodeURIComponent('New Newsletter Subscription');
+                const body = encodeURIComponent(`New subscription from: ${email}`);
+                window.location.href = `mailto:lilyjegzy14@gmail.com?subject=${subject}&body=${body}`;
+                alert(`Thank you for subscribing! Your email (${email}) has been submitted.`);
+                document.getElementById('email').value = '';
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>
